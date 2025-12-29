@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import Papa from 'papaparse';
-import { Product } from '../types';
+import type { Product } from '../types';
 import { products as localProducts } from '../data/products';
 
 interface ProductsContextType {
