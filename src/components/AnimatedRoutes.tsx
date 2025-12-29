@@ -11,6 +11,7 @@ import { ContactPage } from "../pages/ContactPage";
 import { AboutPage } from "../pages/AboutPage";
 import { WishlistPage } from "../pages/WishlistPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
+import { AdminDashboard } from "../pages/AdminDashboard";
 
 import { TermsPage } from "../pages/TermsPage";
 import { PrivacyPage } from "../pages/PrivacyPage";
@@ -46,6 +47,7 @@ export const AnimatedRoutes = () => {
                 <Route path="/deseos" element={<PageWrapper><WishlistPage /></PageWrapper>} />
                 <Route path="/terminos" element={<PageWrapper><TermsPage /></PageWrapper>} />
                 <Route path="/privacidad" element={<PageWrapper><PrivacyPage /></PageWrapper>} />
+                <Route path="/admin" element={<PageWrapper><AdminDashboard /></PageWrapper>} />
                 <Route path="*" element={<PageWrapper><NotFoundPage /></PageWrapper>} />
             </Routes>
         </AnimatePresence>

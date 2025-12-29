@@ -125,8 +125,11 @@ export const Footer = () => {
                 {/* Divider */}
                 <div className="border-t border-slate-800 mt-10 pt-6 text-center text-sm text-slate-500">
                     <p>© {new Date().getFullYear()} Ferro-Market. Todos los derechos reservados.</p>
-                    <p className="mt-2 text-xs">
+                    <p className="mt-2 text-xs flex justify-center items-center gap-1">
                         Desarrollado por <a href="mailto:romerobrandon477@gmail.com" className="text-emerald-500 hover:underline">Brandon Romero</a>
+                        <Link to="/admin" className="opacity-10 hover:opacity-100 transition-opacity ml-1" title="Entrar a Admin">
+                            🔒
+                        </Link>
                     </p>
                 </div>
             </div>

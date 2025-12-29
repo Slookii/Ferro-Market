@@ -4,10 +4,12 @@ import { useCart } from "../context/CartContext";
 import { formatPrice } from "../utils/format";
 import { Button } from "../components/Button";
 import { MessageCircle, MapPin, Truck, User, Phone } from "lucide-react";
+import { orderService } from "../services/orderService";
 
 export const CheckoutPage = () => {
     const { items, cartTotal, clearCart } = useCart();
     const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -27,7 +29,7 @@ export const CheckoutPage = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         // Validation
@@ -36,40 +38,33 @@ export const CheckoutPage = () => {
             return;
         }
 
-        const itemsList = items
-            .map((item) => `- ${item.name} (${item.category}) x ${item.quantity} = ${formatPrice(item.price * item.quantity)}`)
-            .join("\n");
+        try {
+            setIsSubmitting(true);
 
-        const message = `*Nuevo pedido desde la web de Ferro-Market*
-    
-*Cliente:* ${formData.name}
-*WhatsApp:* ${formData.phone}
+            // 1. Guardar en Firebase
+            const orderId = await orderService.createOrder({
+                customer: {
+                    name: formData.name,
+                    phone: formData.phone,
+                    zone: formData.zone || "",
+                    address: formData.address || "",
+                    deliveryMethod: formData.deliveryMethod,
+                    comments: formData.comments || "",
+                },
+                items: items,
+                total: cartTotal,
+            });
 
-*Productos:*
-${itemsList}
+            // 2. Limpiar carrito y redirigir
+            clearCart();
+            navigate("/gracias", { state: { orderId, formData, items, total: cartTotal } });
 
-*Total aproximado:* ${formatPrice(cartTotal)}
-
-*Datos de entrega:*
-Zona/Barrio: ${formData.zone || "-"}
-Dirección: ${formData.address || "-"}
-Entrega: ${formData.deliveryMethod === "coordinar" ? "A coordinar por WhatsApp" : formData.deliveryMethod}
-
-*Comentarios:*
-${formData.comments || "-"}
-
-_Este pedido todavía no está pagado. Vamos a contactarnos con usted para coordinar._`;
-
-        const encodedMessage = encodeURIComponent(message);
-        const adminPhone = "543804808109";
-        const url = `https://wa.me/${adminPhone}?text=${encodedMessage}`;
-
-        // Validar si el usuario está seguro o simplemente redireccionar
-        window.open(url, "_blank");
-
-        // Limpiar carrito y redireccionar a gracias
-        clearCart();
-        navigate("/gracias");
+        } catch (error) {
+            console.error("Error al procesar el pedido:", error);
+            alert("Hubo un error al guardar tu pedido. Por favor intenta de nuevo.");
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -171,11 +166,16 @@ _Este pedido todavía no está pagado. Vamos a contactarnos con usted para coord
                             </div>
                         </div>
 
-                        <Button type="submit" size="lg" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mt-6 flex items-center justify-center gap-2">
-                            <MessageCircle size={20} /> Realizar Pedido por WhatsApp
+                        <Button
+                            type="submit"
+                            size="lg"
+                            disabled={isSubmitting}
+                            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mt-6 flex items-center justify-center gap-2"
+                        >
+                            {isSubmitting ? "Procesando..." : <><MessageCircle size={20} /> Confirmar Compra</>}
                         </Button>
                         <p className="text-xs text-center text-gray-500 mt-2">
-                            Se abrirá WhatsApp para enviar el detalle del pedido.
+                            Al confirmar, se registrará el pedido y te contactaremos por WhatsApp.
                         </p>
                     </form>
                 </div>
