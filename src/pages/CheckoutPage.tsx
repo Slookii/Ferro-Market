@@ -6,17 +6,29 @@ import { Button } from "../components/Button";
 import { MessageCircle, MapPin, Truck, User, Phone } from "lucide-react";
 import { orderService } from "../services/orderService";
 
+import emailjs, { init } from '@emailjs/browser';
+
+// EmailJS Configuration
+const SERVICE_ID = "service_vzf49ek"; // Updated from latest screenshot
+const TEMPLATE_ID = "template_dzyinum"; // Updated from latest screenshot
+const PUBLIC_KEY = "0_ovrbwBnbTB87lRm";
+
+// Initialize EmailJS immediately (v4 syntax)
+init({ publicKey: PUBLIC_KEY });
+
 export const CheckoutPage = () => {
     const { items, cartTotal, clearCart } = useCart();
+    // ... rest of the component
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // ... formData state ...
     const [formData, setFormData] = useState({
         name: "",
         phone: "",
         zone: "",
         address: "",
-        deliveryMethod: "coordinar", // coordinar
+        deliveryMethod: "coordinar",
         comments: "",
     });
 
@@ -41,8 +53,8 @@ export const CheckoutPage = () => {
         try {
             setIsSubmitting(true);
 
-            // 1. Guardar en Firebase
-            const orderId = await orderService.createOrder({
+            // 1. Prepare Order Data
+            const orderData = {
                 customer: {
                     name: formData.name,
                     phone: formData.phone,
@@ -51,17 +63,72 @@ export const CheckoutPage = () => {
                     deliveryMethod: formData.deliveryMethod,
                     comments: formData.comments || "",
                 },
-                items: items,
+                items: items.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    category: item.category,
+                    price: item.price,
+                    originalPrice: item.originalPrice || null,
+                    stock: item.stock,
+                    description: item.description,
+                    images: item.images || [],
+                    colors: item.colors || [],
+                    sizes: item.sizes || [],
+                    isNew: item.isNew || false,
+                    quantity: item.quantity,
+                    selectedColor: item.selectedColor || null,
+                    selectedSize: item.selectedSize || null,
+                })),
                 total: cartTotal,
-            });
+                status: "pending" as const,
+            };
 
-            // 2. Limpiar carrito y redirigir
+            // 2. Save to Firebase
+            const orderId = await orderService.createOrder(orderData);
+
+            // 3. Send Email Notification (DIRECT IMPLEMENTATION)
+            try {
+                const templateParams = {
+                    to_name: "Brandon",
+                    from_name: formData.name,
+                    message: `
+Hola Brandon, ¡Tienes un Nuevo Pedido! 🎉
+
+ID: #${orderId}
+Cliente: ${formData.name}
+Teléfono: ${formData.phone}
+Total: ${formatPrice(cartTotal)}
+
+Detalles de entrega:
+Método: ${formData.deliveryMethod}
+Zona: ${formData.zone || ""}
+Dirección: ${formData.address || ""}
+
+Productos (${items.length}):
+${items.map(item => `- ${item.quantity}x ${item.name}`).join('\n')}
+
+Comentarios: ${formData.comments || 'Ninguno'}
+                    `,
+                    reply_to: formData.phone
+                };
+
+                // Remove 4th argument to match working email_test.html
+                await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);
+
+            } catch (emailErr) {
+                console.error("Email send failed", emailErr);
+                // Silently fail on email to not block user flow, but log it.
+            }
+
+            // 4. Clear cart and redirect
             clearCart();
             navigate("/gracias", { state: { orderId, formData, items, total: cartTotal } });
 
         } catch (error) {
             console.error("Error al procesar el pedido:", error);
-            alert("Hubo un error al guardar tu pedido. Por favor intenta de nuevo.");
+            // Mostrar error más descriptivo si es posible
+            const errorMessage = error instanceof Error ? error.message : "Error desconocido";
+            alert(`Hubo un error al guardar tu pedido: ${errorMessage}`);
         } finally {
             setIsSubmitting(false);
         }

@@ -10,19 +10,19 @@ export interface Product {
     name: string;
     category: Category;
     price: number;
-    originalPrice?: number;
+    originalPrice?: number | null;
     stock: number;
     description: string;
     images: string[];
-    colors?: string[];
-    sizes?: string[];
+    colors?: string[] | null;
+    sizes?: string[] | null;
     isNew?: boolean;
 }
 
 export interface CartItem extends Product {
     quantity: number;
-    selectedColor?: string;
-    selectedSize?: string;
+    selectedColor?: string | null;
+    selectedSize?: string | null;
 }
 
 export type OrderStatus = 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
