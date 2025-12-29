@@ -52,7 +52,6 @@ export const Navbar = () => {
             <nav className="bg-emerald-700 dark:bg-slate-900 text-white shadow-md sticky top-0 z-50 transition-colors">
                 <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-4">
                     <Link to="/" className="text-xl font-bold tracking-tight flex items-center gap-2 shrink-0 group perspective-1000">
-                        <img src="/cactus.svg" alt="Ferro-Market Logo" className="w-10 h-10 drop-shadow-md" />
                         <motion.div
                             initial={{ rotateY: 0 }}
                             animate={{ rotateY: 360 }}
