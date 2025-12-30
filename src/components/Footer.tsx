@@ -127,8 +127,8 @@ export const Footer = () => {
                     <p>© {new Date().getFullYear()} Ferro-Market. Todos los derechos reservados.</p>
                     <p className="mt-2 text-xs flex justify-center items-center gap-1">
                         Desarrollado por <a href="mailto:romerobrandon477@gmail.com" className="text-emerald-500 hover:underline">Brandon Romero</a>
-                        <Link to="/admin" className="opacity-10 hover:opacity-100 transition-opacity ml-1" title="Entrar a Admin">
-                            🔒
+                        <Link to="/admin" className="opacity-60 hover:opacity-100 transition-opacity ml-2 text-gray-500 hover:text-emerald-500" title="Panel de Administración">
+                            (Admin)
                         </Link>
                     </p>
                 </div>
