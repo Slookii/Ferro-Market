@@ -239,7 +239,7 @@ Comentarios: ${formData.comments || 'Ninguno'}
                             disabled={isSubmitting}
                             className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mt-6 flex items-center justify-center gap-2"
                         >
-                            {isSubmitting ? "Procesando..." : <><MessageCircle size={20} /> Confirmar Compra</>}
+                            {isSubmitting ? "Procesando..." : <><MessageCircle size={20} /> Realizar Pedido por WhatsApp</>}
                         </Button>
                         <p className="text-xs text-center text-gray-500 mt-2">
                             Al confirmar, se registrará el pedido y te contactaremos por WhatsApp.
