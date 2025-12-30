@@ -2,6 +2,7 @@
 
 
 import { Link } from "react-router-dom";
+import { Lock } from "lucide-react";
 
 const SocialIcon = ({ href, path, label }: { href: string; path: string; label: string }) => (
     <a
@@ -127,8 +128,8 @@ export const Footer = () => {
                     <p>© {new Date().getFullYear()} Ferro-Market. Todos los derechos reservados.</p>
                     <p className="mt-2 text-xs flex justify-center items-center gap-1">
                         Desarrollado por <a href="mailto:romerobrandon477@gmail.com" className="text-emerald-500 hover:underline">Brandon Romero</a>
-                        <Link to="/admin" className="opacity-60 hover:opacity-100 transition-opacity ml-2 text-gray-500 hover:text-emerald-500" title="Panel de Administración">
-                            (Admin)
+                        <Link to="/admin" className="opacity-30 hover:opacity-100 transition-opacity ml-2 text-gray-400 hover:text-emerald-500" title="Admin">
+                            <Lock size={14} />
                         </Link>
                     </p>
                 </div>

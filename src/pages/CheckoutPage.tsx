@@ -86,6 +86,7 @@ export const CheckoutPage = () => {
             // 2. Save to Firebase
             const orderId = await orderService.createOrder(orderData);
 
+
             // 3. Send Email Notification (DIRECT IMPLEMENTATION)
             try {
                 const templateParams = {

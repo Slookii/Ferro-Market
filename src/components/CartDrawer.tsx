@@ -108,22 +108,21 @@ export const CartDrawer = () => {
                             <span>{formatPrice(cartTotal)}</span>
                         </div>
                         <div className="grid gap-3">
+                            <Button
+                                onClick={() => { closeCart(); navigate("/checkout"); }}
+                                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-md"
+                            >
+                                Finalizar Compra
+                            </Button>
                             <a
                                 href={`https://wa.me/543804808109?text=${generateWhatsAppMessage()}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-full bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-emerald-700 transition flex items-center justify-center gap-2"
+                                className="w-full bg-emerald-50 text-emerald-700 font-bold py-3 px-4 rounded-xl hover:bg-emerald-100 transition flex items-center justify-center gap-2"
                             >
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" className="w-5 h-5" />
                                 Pedir por WhatsApp
                             </a>
-                            <Button
-                                onClick={() => { closeCart(); navigate("/checkout"); }}
-                                variant="secondary"
-                                className="w-full"
-                            >
-                                Ir al Checkout
-                            </Button>
                         </div>
                     </div>
                 )}
