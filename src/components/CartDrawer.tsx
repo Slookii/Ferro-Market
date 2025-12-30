@@ -66,7 +66,7 @@ export const CartDrawer = () => {
                                         <div className="flex justify-between items-start gap-2">
                                             <h3 className="font-semibold text-gray-800 dark:text-white line-clamp-2">{item.name}</h3>
                                             <button
-                                                onClick={() => removeFromCart(item.id, item.selectedColor, item.selectedSize)}
+                                                onClick={() => removeFromCart(item.id, item.selectedColor || undefined, item.selectedSize || undefined)}
                                                 className="text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition"
                                             >
                                                 <Trash2 size={18} />
@@ -80,14 +80,14 @@ export const CartDrawer = () => {
                                     <div className="flex items-center justify-between mt-2">
                                         <div className="flex items-center gap-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-md px-2 py-1">
                                             <button
-                                                onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1), item.selectedColor, item.selectedSize)}
+                                                onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1), item.selectedColor || undefined, item.selectedSize || undefined)}
                                                 className="text-gray-500 hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400"
                                             >
                                                 <Minus size={14} />
                                             </button>
                                             <span className="text-sm font-medium w-4 text-center dark:text-white">{item.quantity}</span>
                                             <button
-                                                onClick={() => updateQuantity(item.id, Math.min(item.stock, item.quantity + 1), item.selectedColor, item.selectedSize)}
+                                                onClick={() => updateQuantity(item.id, Math.min(item.stock, item.quantity + 1), item.selectedColor || undefined, item.selectedSize || undefined)}
                                                 className="text-gray-500 hover:text-emerald-600 dark:text-gray-400 dark:hover:text-emerald-400"
                                             >
                                                 <Plus size={14} />

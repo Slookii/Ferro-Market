@@ -53,7 +53,7 @@ export const CartPage = () => {
                                     <div className="flex items-center border border-gray-200 rounded-md bg-gray-50">
                                         <button
                                             className="p-1 hover:bg-gray-200 disabled:opacity-50"
-                                            onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1), item.selectedColor, item.selectedSize)}
+                                            onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1), item.selectedColor || undefined, item.selectedSize || undefined)}
                                             disabled={item.quantity <= 1}
                                         >
                                             <Minus size={14} />
@@ -61,7 +61,7 @@ export const CartPage = () => {
                                         <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
                                         <button
                                             className="p-1 hover:bg-gray-200 disabled:opacity-50"
-                                            onClick={() => updateQuantity(item.id, Math.min(item.stock, item.quantity + 1), item.selectedColor, item.selectedSize)}
+                                            onClick={() => updateQuantity(item.id, Math.min(item.stock, item.quantity + 1), item.selectedColor || undefined, item.selectedSize || undefined)}
                                             disabled={item.quantity >= item.stock}
                                         >
                                             <Plus size={14} />
@@ -74,7 +74,7 @@ export const CartPage = () => {
                                     {formatPrice(item.price * item.quantity)}
                                 </span>
                                 <button
-                                    onClick={() => removeFromCart(item.id, item.selectedColor, item.selectedSize)}
+                                    onClick={() => removeFromCart(item.id, item.selectedColor || undefined, item.selectedSize || undefined)}
                                     className="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-full transition"
                                     title="Eliminar producto"
                                 >
